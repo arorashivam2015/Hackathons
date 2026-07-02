@@ -4,6 +4,12 @@
 
 ---
 
+## Certificate
+
+![Certificate](Shivam%20A.%20-%20Jigsaw%20-%20Agile%20Community%20Rules%20Classification.png)
+
+---
+
 ## Competition Overview
 
 **Task:** Given a Reddit comment and a community rule, predict whether the comment violates that rule. This is a binary classification problem where the output is a continuous violation score (higher = more likely to violate).
@@ -23,9 +29,9 @@ A notable feature of the test set is that it includes `positive_example_1/2` (co
 
 ## Our Solution
 
-We built three independent systems and ensembled them. Each notebook in this folder corresponds to one approach.
+We built three independent systems and ensembled them. Each notebook in [`37th_Rank_Solution/`](37th_Rank_Solution/) corresponds to one approach.
 
-### 1. Embedding Ensemble (`embedding_ensemble.ipynb`)
+### 1. Embedding Ensemble (`37th_Rank_Solution/embedding_ensemble.ipynb`)
 
 Fine-tuned three bi-encoder models on the rule-violation corpus using **triplet loss**:
 - `thenlper/gte-large`
@@ -40,7 +46,7 @@ Fine-tuned three bi-encoder models on the rule-violation corpus using **triplet 
 
 ---
 
-### 2. Cross-Encoder Ensemble (`cross_encoder.ipynb`)
+### 2. Cross-Encoder Ensemble (`37th_Rank_Solution/cross_encoder.ipynb`)
 
 Fine-tuned three cross-encoder models that jointly attend to both the rule and the comment in a single forward pass, enabling richer interaction than bi-encoders:
 - `google/electra-base-discriminator` (seed 42)
@@ -53,7 +59,7 @@ Fine-tuned three cross-encoder models that jointly attend to both the rule and t
 
 ---
 
-### 3. LLM Fine-tuning with LoRA (`llm_finetuning.ipynb`)
+### 3. LLM Fine-tuning with LoRA (`37th_Rank_Solution/llm_finetuning.ipynb`)
 
 Fine-tuned `Qwen2.5-7B-Instruct` (GPTQ INT4) with **LoRA** on a sampled 15% of the corpus, then ran constrained inference via vLLM.
 
