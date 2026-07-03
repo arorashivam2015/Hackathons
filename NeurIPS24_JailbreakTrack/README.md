@@ -1,6 +1,10 @@
 # NeurIPS 2024 – Jailbreak Track
 
+> **Global Rank 2** at the NeurIPS 2024 Jailbreak Track.
+
 Submission for the NeurIPS 2024 Jailbreak hackathon track. The pipeline generates adversarial jailbreak prompts against a target LLM using five attack strategies, scores candidates on harmfulness and stealthiness, and selects the best prompt per input for submission.
+
+![Competition Details](CompetitionDetails.png)
 
 ---
 
