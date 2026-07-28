@@ -4,15 +4,15 @@
 
 ## Best Submission
 
-The highest-scoring configuration ran **all seven approaches with 3 seeds/members each**, blended with the per-approach weights below:
+The highest-scoring configuration ran **all seven approaches**, blended with the per-approach seed counts and weights below:
 
 | Approach | Seeds | Weight (top submission) |
 |---|:---:|:---:|
 | lama3-8b-INSTRU | 3 | 0.20 |
 | QWEN3-8b | 3 | 0.20 |
-| QWEN3-4b-INSTRU | 3 | 0.10 |
-| QWEN2.5-7b-INSTRU | 3 | 0.10 |
-| llama3.2-3b-INSTRU | 3 | 0.10 |
+| QWEN3-4b-INSTRU | 1 | 0.10 |
+| QWEN2.5-7b-INSTRU | 1 | 0.10 |
+| llama3.2-3b-INSTRU | 1 | 0.10 |
 | Embedding | 3 | 0.15 |
 | Cross-Encoder | 3 | 0.15 |
 | **Total** | | **1.00** |
@@ -40,7 +40,7 @@ The highest-scoring configuration ran **all seven approaches with 3 seeds/member
 
 - **GPUs (Training)** is 1 for every approach — none use multi-GPU training (e.g. DeepSpeed); each seed/model trains on a single pinned GPU.
 - **GPUs (Inference) = 2** (lama3-8b-INSTRU, QWEN3-8b, QWEN2.5-7b-INSTRU): these use vLLM tensor parallelism (`tensor_parallel_size=num_gpus`) — the unquantized model is split across both GPUs per seed, run sequentially seed by seed (train on GPU 0, then infer split across both GPUs).
-- **GPUs (Inference) = 1** (QWEN3-4b-INSTRU, llama3.2-3b-INSTRU): these use the per-seed-per-GPU scheduler (`tensor_parallel_size=1`) — each of the 3 seeds trains and infers independently on its own single GPU, with seeds cycling through the 2 available GPUs in parallel batches.
+- **GPUs (Inference) = 1** (QWEN3-4b-INSTRU, llama3.2-3b-INSTRU): these use the per-seed-per-GPU scheduler (`tensor_parallel_size=1`) — each seed trains and infers independently on its own single GPU, with seeds cycling through the 2 available GPUs in parallel batches.
 - **Embedding**: a different (non-LLM) pipeline — a sentence-embedding model fine-tuned per member (m1/m2/m3), each job pinned to one GPU for both training and inference (true independent parallelism, not DataParallel — DataParallel was tried and found slower due to cross-GPU sync overhead for a workload this small), with the three members' predictions blended (simple average) at the end.
 - **Cross-Encoder**: three different base cross-encoder models (m1/m2/m3), each fine-tuned once with its own seed, one GPU each, run in parallel and blended by per-rule rank.
-- All LLM approaches use 3 seeds (`SEEDS = [1010, 2020, 3030]`); Embedding and Cross-Encoder use 3 independently trained members (m1, m2, m3) as their ensemble members instead.
+- The LLM approaches support up to 3 seeds (`SEEDS = [1010, 2020, 3030]`); the top submission used 3 seeds for the two strongest models and 1 for the rest. Embedding and Cross-Encoder use 3 independently trained members (m1, m2, m3) as their ensemble members.
