@@ -71,6 +71,13 @@ Fine-tuned `Qwen2.5-7B-Instruct` (GPTQ INT4) with **LoRA** on a sampled 15% of t
 
 ---
 
-## Learnings from Top Submissions
+## Results
 
-*To be filled.*
+| Approach | ROC-AUC | Runtime |
+|---|:---:|:---:|
+| **Full ensemble** (all three systems) | **0.929** | 11 hours |
+| LLM fine-tuning (LoRA) | 0.920 | 8 hours |
+| Embedding ensemble | 0.916 | 45 min |
+| Cross-encoder ensemble | 0.912 | 1 hour |
+
+I later improved the approach further to reach **0.933 in 7 hours** — a higher score in less time than the original ensemble. See the [`Optimized_Solution/`](Optimized_Solution/) folder for that pipeline.
