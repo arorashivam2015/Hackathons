@@ -2,6 +2,8 @@
 
 `Master_Ensemble_v1.ipynb` combines all seven approaches below into a single pipeline: a job allocator schedules each approach's training and inference across Kaggle's 2×T4 GPUs (either **automatically**, for minimum wall time, or via a **manual** GPU assignment), then blends every approach's per-rule ranked predictions using a configurable **per-approach weight**. All run times listed below are measured wall-clock times on that 2×T4 environment.
 
+For a fuller, illustrated walkthrough of this approach, see the writeup at **[aiobserver.in](https://www.aiobserver.in/blog/visual-guide-five-llms-two-gpus-jigsaw)**.
+
 ## Best Submission
 
 The highest-scoring configuration ran **all seven approaches**, blended with the per-approach seed counts and weights below:
