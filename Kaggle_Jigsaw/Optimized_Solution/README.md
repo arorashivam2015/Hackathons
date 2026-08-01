@@ -46,3 +46,9 @@ The highest-scoring configuration ran **all seven approaches**, blended with the
 - **Embedding**: a different (non-LLM) pipeline — a sentence-embedding model fine-tuned per member (m1/m2/m3), each job pinned to one GPU for both training and inference (true independent parallelism, not DataParallel — DataParallel was tried and found slower due to cross-GPU sync overhead for a workload this small), with the three members' predictions blended (simple average) at the end.
 - **Cross-Encoder**: three different base cross-encoder models (m1/m2/m3), each fine-tuned once with its own seed, one GPU each, run in parallel and blended by per-rule rank.
 - The LLM approaches support up to 3 seeds (`SEEDS = [1010, 2020, 3030]`); the top submission used 3 seeds for the two strongest models and 1 for the rest. Embedding and Cross-Encoder use 3 independently trained members (m1, m2, m3) as their ensemble members.
+
+## Update — v3: adds Qwen3-14B and Qwen2.5-14B
+
+`Master_Ensemble_v3.ipynb` extends the pipeline above with two more LLM approaches, **Qwen3-14B** and **Qwen2.5-14B**. Qwen3-14B's checkpoint is bnb-4bit prequantized, so it trains through the same shared `train_llm.py` as every other model but infers through a different, faster engine (Unsloth's `FastLanguageModel.for_inference()`, ~3x faster than vLLM on that checkpoint) instead of the vLLM-based `infer_llm.py` used by the rest — see `infer_engine` in `MODEL_REGISTRY`.
+
+**Public score: 0.93377 AUC · Private score: 0.92950 AUC** — would have secured **1st rank** on the private leaderboard.
